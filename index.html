@@ -122,6 +122,38 @@
   .divider { display:flex; align-items:center; gap:12px; margin:32px 0; }
   .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(242,196,206,.5),transparent); }
   .divider span { font-size:16px; color:var(--blush); }
+  /* RADIO ГРУПА У ФОРМІ */
+  .radio-group { display:flex; flex-direction:column; gap:10px; }
+  .radio-option {
+    display:flex; align-items:center; gap:12px;
+    padding:13px 18px;
+    background:var(--light-blush);
+    border:1.5px solid rgba(242,196,206,.5);
+    border-radius:12px; cursor:pointer;
+    transition:all .2s ease;
+    user-select:none;
+  }
+  .radio-option:hover { border-color:var(--rose); background:white; }
+  .radio-option.selected {
+    border-color:var(--deep-rose);
+    background:linear-gradient(135deg,#FDF0F3,white);
+    box-shadow:0 3px 16px rgba(139,58,82,.12);
+  }
+  .radio-option.selected .radio-dot { background:var(--deep-rose); border-color:var(--deep-rose); }
+  .radio-option.selected .radio-dot::after { opacity:1; }
+  .radio-dot {
+    width:18px; height:18px; min-width:18px;
+    border:2px solid var(--blush); border-radius:50%;
+    position:relative; transition:all .2s;
+  }
+  .radio-dot::after {
+    content:''; position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:7px; height:7px; background:white; border-radius:50%;
+    opacity:0; transition:opacity .2s;
+  }
+  .radio-option span { font-size:14px; color:var(--dark); line-height:1.4; }
+
   @media(max-width:480px){ .wrap{padding:32px 16px 60px;} .contact-wrap{padding:32px 20px;} }
 </style>
 </head>
@@ -230,15 +262,66 @@
       <div class="contact-icon">🌸</div>
       <h2 class="contact-title">Залишився один крок</h2>
       <p class="contact-sub">Введи свої дані — і ми покажемо детальний результат та персональні рекомендації для твого салону</p>
+
       <div class="form-field">
         <label class="form-label">Твоє ім'я</label>
         <input type="text" id="field-name" class="form-input" placeholder="Наприклад: Марія">
       </div>
+
       <div class="form-field">
         <label class="form-label">Номер телефону</label>
         <input type="tel" id="field-phone" class="form-input" placeholder="+380 ___ ___ ___">
       </div>
-      <div id="form-error" class="form-error" style="display:none">Будь ласка, заповни обидва поля</div>
+
+      <div class="form-field">
+        <label class="form-label">Твоя роль у бізнесі</label>
+        <div class="radio-group" id="field-role">
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Власник</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Власник і працюю майстром</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Керуюча</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Адміністратор</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Підприємець</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')">
+            <div class="radio-dot"></div><span>Інша роль</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Оберт за останній місяць</label>
+        <div class="radio-group" id="field-revenue">
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>До 50 000 грн</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>50 000 — 150 000 грн</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>150 000 — 300 000 грн</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>300 000 — 500 000 грн</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>500 000 — 1 000 000 грн</span>
+          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')">
+            <div class="radio-dot"></div><span>Від 1 000 000 грн+</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="form-error" class="form-error" style="display:none">Будь ласка, заповни всі поля</div>
       <div id="form-sending" class="form-sending" style="display:none">Зберігаємо дані... ✨</div>
       <button class="btn-submit" id="btn-submit" onclick="submitAndShowResult()">ПОКАЗАТИ МІЙ РЕЗУЛЬТАТ →</button>
       <p class="form-privacy">🔒 Твої дані в безпеці — не передаємо третім особам</p>
@@ -309,16 +392,28 @@
     document.getElementById('contact-screen').style.display = 'block';
   }
 
+  function selectRadio(el, group) {
+    document.querySelectorAll(`#field-${group} .radio-option`).forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function getRadioValue(group) {
+    const sel = document.querySelector(`#field-${group} .radio-option.selected span`);
+    return sel ? sel.textContent : '';
+  }
+
   function getLabel(s) { return ['Критично','Слабко','Непогано','Добре'][s]||'—'; }
 
   async function submitAndShowResult() {
-    const name  = document.getElementById('field-name').value.trim();
-    const phone = document.getElementById('field-phone').value.trim();
-    const errEl = document.getElementById('form-error');
-    const sendEl = document.getElementById('form-sending');
-    const btn = document.getElementById('btn-submit');
+    const name    = document.getElementById('field-name').value.trim();
+    const phone   = document.getElementById('field-phone').value.trim();
+    const role    = getRadioValue('role');
+    const revenue = getRadioValue('revenue');
+    const errEl   = document.getElementById('form-error');
+    const sendEl  = document.getElementById('form-sending');
+    const btn     = document.getElementById('btn-submit');
     errEl.style.display = 'none';
-    if (!name || !phone) { errEl.style.display = 'block'; return; }
+    if (!name || !phone || !role || !revenue) { errEl.style.display = 'block'; return; }
 
     const total = scores.reduce((a,b)=>a+b,0);
     const pct = Math.round((total/21)*100);
@@ -330,7 +425,7 @@
     sendEl.style.display = 'block';
 
     const payload = {
-      date: dateStr, name, phone,
+      date: dateStr, name, phone, role, revenue,
       score: pct+'%', zone,
       q1: getLabel(scores[0]), q2: getLabel(scores[1]),
       q3: getLabel(scores[2]), q4: getLabel(scores[3]),
@@ -401,11 +496,13 @@
   function sendViaForm(data) {
     const form = document.getElementById('hidden-form');
     form.action = SHEET_URL;
-    document.getElementById('hf-date').value  = data.date;
-    document.getElementById('hf-name').value  = data.name;
-    document.getElementById('hf-phone').value = data.phone;
-    document.getElementById('hf-score').value = data.score;
-    document.getElementById('hf-zone').value  = data.zone;
+    document.getElementById('hf-date').value    = data.date;
+    document.getElementById('hf-name').value    = data.name;
+    document.getElementById('hf-phone').value   = data.phone;
+    document.getElementById('hf-role').value    = data.role;
+    document.getElementById('hf-revenue').value = data.revenue;
+    document.getElementById('hf-score').value   = data.score;
+    document.getElementById('hf-zone').value    = data.zone;
     document.getElementById('hf-q1').value = data.q1;
     document.getElementById('hf-q2').value = data.q2;
     document.getElementById('hf-q3').value = data.q3;
@@ -431,6 +528,7 @@
     document.getElementById('field-name').value='';
     document.getElementById('field-phone').value='';
     document.getElementById('btn-submit').disabled=false;
+    document.querySelectorAll('.radio-option').forEach(o=>o.classList.remove('selected'));
     document.getElementById('score-ring').className='result-score-ring';
     document.getElementById('ring-fill').style.strokeDashoffset='339.3';
     updateProgress(1);
@@ -447,15 +545,17 @@
 ║     A: Дата                                          ║
 ║     B: Ім'я                                          ║
 ║     C: Телефон                                       ║
-║     D: Результат %                                   ║
-║     E: Зона                                          ║
-║     F: Фінанси                                       ║
-║     G: Завантаженість                                ║
-║     H: Клієнти                                       ║
-║     I: Незалежність                                  ║
-║     J: Команда                                       ║
-║     K: Продажі                                       ║
-║     L: Дохід                                         ║
+║     D: Роль у бізнесі                                ║
+║     E: Оберт за місяць                               ║
+║     F: Результат %                                   ║
+║     G: Зона                                          ║
+║     H: Фінанси                                       ║
+║     I: Завантаженість                                ║
+║     J: Клієнти                                       ║
+║     K: Незалежність                                  ║
+║     L: Команда                                       ║
+║     M: Продажі                                       ║
+║     N: Дохід                                         ║
 ║                                                      ║
 ║  2. Розширення → Apps Script → вставте код:          ║
 ║                                                      ║
@@ -487,11 +587,13 @@
 -->
   <!-- Прихована форма для відправки в Google Sheets -->
   <form id="hidden-form" method="GET" target="hidden-iframe" style="display:none">
-    <input name="date"  id="hf-date">
-    <input name="name"  id="hf-name">
-    <input name="phone" id="hf-phone">
-    <input name="score" id="hf-score">
-    <input name="zone"  id="hf-zone">
+    <input name="date"    id="hf-date">
+    <input name="name"    id="hf-name">
+    <input name="phone"   id="hf-phone">
+    <input name="role"    id="hf-role">
+    <input name="revenue" id="hf-revenue">
+    <input name="score"   id="hf-score">
+    <input name="zone"    id="hf-zone">
     <input name="q1" id="hf-q1"><input name="q2" id="hf-q2">
     <input name="q3" id="hf-q3"><input name="q4" id="hf-q4">
     <input name="q5" id="hf-q5"><input name="q6" id="hf-q6">
