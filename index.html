@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест: Здоров'я Твого Салону</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream:#FDF6F0; --blush:#F2C4CE; --rose:#C8768A;
+    --deep-rose:#8B3A52; --gold:#C9A96E; --dark:#2D1F26;
+    --soft-gray:#9E8A90; --light-blush:#FAF0F3; --white:#FFFFFF;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family:'Jost',sans-serif; background:var(--cream); color:var(--dark); min-height:100vh; overflow-x:hidden; }
+  body::before { content:''; position:fixed; top:-80px; right:-80px; width:320px; height:320px; background:radial-gradient(circle,rgba(242,196,206,.35) 0%,transparent 70%); border-radius:50%; pointer-events:none; z-index:0; }
+  body::after  { content:''; position:fixed; bottom:-60px; left:-60px; width:260px; height:260px; background:radial-gradient(circle,rgba(201,169,110,.2) 0%,transparent 70%); border-radius:50%; pointer-events:none; z-index:0; }
+  .wrap { max-width:680px; margin:0 auto; padding:48px 24px 80px; position:relative; z-index:1; }
+
+  /* ШАПКА */
+  .header { text-align:center; margin-bottom:48px; }
+  .header-tag { display:inline-block; background:var(--rose); color:var(--white); font-size:10px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; padding:6px 20px; border-radius:20px; margin-bottom:20px; }
+  .header h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,7vw,52px); font-weight:600; line-height:1.15; color:var(--dark); margin-bottom:8px; }
+  .header h1 em { font-style:italic; color:var(--deep-rose); }
+  .header-line { width:80px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:16px auto; }
+  .header p { font-size:15px; color:var(--soft-gray); font-weight:300; line-height:1.6; max-width:480px; margin:0 auto; }
+
+  /* ПРОГРЕС */
+  .progress-bar-wrap { background:var(--blush); border-radius:10px; height:4px; margin-bottom:36px; overflow:hidden; opacity:.6; }
+  .progress-bar { height:100%; background:linear-gradient(90deg,var(--rose),var(--gold)); border-radius:10px; transition:width .5s cubic-bezier(.4,0,.2,1); width:0%; }
+  .progress-label { text-align:right; font-size:11px; color:var(--soft-gray); margin-bottom:8px; letter-spacing:1px; }
+
+  /* ПИТАННЯ */
+  .question-block { display:none; animation:fadeUp .4s ease both; }
+  .question-block.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  .q-number { font-size:11px; font-weight:600; color:var(--rose); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+  .q-text { font-family:'Cormorant Garamond',serif; font-size:clamp(20px,4vw,26px); font-weight:600; line-height:1.35; color:var(--dark); margin-bottom:28px; }
+
+  /* ВАРІАНТИ */
+  .options { display:flex; flex-direction:column; gap:12px; }
+  .option { display:flex; align-items:center; gap:14px; padding:16px 20px; background:var(--white); border:1.5px solid rgba(242,196,206,.5); border-radius:12px; cursor:pointer; transition:all .22s ease; position:relative; overflow:hidden; }
+  .option::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(242,196,206,.15),transparent); opacity:0; transition:opacity .22s; }
+  .option:hover { border-color:var(--rose); transform:translateX(4px); box-shadow:0 4px 20px rgba(200,118,138,.12); }
+  .option:hover::before { opacity:1; }
+  .option.selected { border-color:var(--deep-rose); background:linear-gradient(135deg,#FDF0F3,var(--white)); box-shadow:0 4px 24px rgba(139,58,82,.15); }
+  .option.selected .opt-dot { background:var(--deep-rose); border-color:var(--deep-rose); }
+  .option.selected .opt-dot::after { opacity:1; }
+  .opt-dot { width:20px; height:20px; min-width:20px; border:2px solid var(--blush); border-radius:50%; position:relative; transition:all .22s; }
+  .opt-dot::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:8px; height:8px; background:var(--white); border-radius:50%; opacity:0; transition:opacity .2s; }
+  .opt-text { font-size:14.5px; line-height:1.45; color:var(--dark); font-weight:400; }
+
+  /* КНОПКА ДАЛІ */
+  .btn-next { margin-top:28px; width:100%; padding:16px 32px; background:linear-gradient(135deg,var(--deep-rose),var(--rose)); color:var(--white); border:none; border-radius:50px; font-family:'Jost',sans-serif; font-size:14px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all .25s ease; box-shadow:0 6px 24px rgba(200,118,138,.3); display:none; }
+  .btn-next:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(200,118,138,.4); }
+  .btn-next.visible { display:block; }
+
+  /* ФОРМА КОНТАКТІВ */
+  #contact-screen { display:none; animation:fadeUp .5s ease both; }
+  .contact-wrap { background:var(--white); border-radius:24px; padding:44px 36px; border:1px solid rgba(242,196,206,.4); box-shadow:0 8px 40px rgba(200,118,138,.08); text-align:center; }
+  .contact-icon { font-size:40px; margin-bottom:16px; }
+  .contact-title { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,5vw,36px); font-weight:600; color:var(--dark); margin-bottom:10px; line-height:1.2; }
+  .contact-sub { font-size:14px; color:var(--soft-gray); line-height:1.65; margin-bottom:32px; }
+  .form-field { margin-bottom:16px; text-align:left; }
+  .form-label { display:block; font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--rose); margin-bottom:8px; }
+  .form-input { width:100%; padding:14px 18px; border:1.5px solid rgba(242,196,206,.6); border-radius:12px; font-family:'Jost',sans-serif; font-size:15px; color:var(--dark); background:var(--light-blush); transition:border-color .2s,box-shadow .2s; outline:none; }
+  .form-input:focus { border-color:var(--rose); box-shadow:0 0 0 3px rgba(200,118,138,.12); background:var(--white); }
+  .form-input::placeholder { color:#bba8b0; }
+  .form-error { color:var(--deep-rose); font-size:13px; margin-bottom:12px; }
+  .form-sending { color:var(--rose); font-size:13px; margin-bottom:12px; font-style:italic; }
+  .btn-submit { width:100%; padding:17px 32px; margin-top:8px; background:linear-gradient(135deg,var(--deep-rose),var(--rose)); color:var(--white); border:none; border-radius:50px; font-family:'Jost',sans-serif; font-size:14px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; transition:all .25s ease; box-shadow:0 6px 24px rgba(200,118,138,.35); }
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(200,118,138,.45); }
+  .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .form-privacy { font-size:11px; color:var(--soft-gray); margin-top:14px; }
+
+  /* РЕЗУЛЬТАТ */
+  #result-screen { display:none; }
+  #result-screen.show { display:block; animation:fadeUp .5s ease both; }
+  .result-header { text-align:center; margin-bottom:40px; }
+  .result-score-ring { width:140px; height:140px; margin:0 auto 24px; position:relative; }
+  .result-score-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .ring-bg { fill:none; stroke:rgba(242,196,206,.3); stroke-width:8; }
+  .ring-fill { fill:none; stroke-width:8; stroke-linecap:round; stroke-dasharray:339.3; stroke-dashoffset:339.3; transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); }
+  .score-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+  .score-number { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:600; line-height:1; display:block; }
+  .score-label { font-size:11px; color:var(--soft-gray); text-transform:uppercase; letter-spacing:1.5px; }
+  .result-title { font-family:'Cormorant Garamond',serif; font-size:clamp(24px,5vw,34px); font-weight:600; line-height:1.2; margin-bottom:10px; }
+  .result-emoji { font-size:28px; margin-bottom:12px; display:block; }
+  .result-desc { font-size:15px; color:var(--soft-gray); line-height:1.65; max-width:500px; margin:0 auto 32px; }
+  .zone-bad  .score-number { color:var(--deep-rose); } .zone-bad  .ring-fill { stroke:var(--deep-rose); }
+  .zone-mid  .score-number { color:var(--gold); }      .zone-mid  .ring-fill { stroke:var(--gold); }
+  .zone-good .score-number { color:#7cad7a; }          .zone-good .ring-fill { stroke:#7cad7a; }
+  .result-details { background:var(--white); border-radius:16px; padding:28px 28px 24px; margin-bottom:28px; border:1px solid rgba(242,196,206,.4); }
+  .detail-title { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--rose); margin-bottom:16px; }
+  .detail-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid rgba(242,196,206,.25); }
+  .detail-item:last-child { border-bottom:none; }
+  .detail-dot { width:8px; height:8px; min-width:8px; border-radius:50%; margin-top:5px; }
+  .detail-item p { font-size:13.5px; line-height:1.5; color:var(--dark); }
+
+  /* CTA */
+  .cta-block { background:linear-gradient(135deg,var(--dark),#4A2535); border-radius:20px; padding:36px 32px; text-align:center; position:relative; overflow:hidden; margin-bottom:24px; }
+  .cta-block::before { content:''; position:absolute; top:-40px; right:-40px; width:180px; height:180px; background:radial-gradient(circle,rgba(242,196,206,.12) 0%,transparent 70%); border-radius:50%; }
+  .cta-block::after  { content:''; position:absolute; bottom:-30px; left:-30px; width:140px; height:140px; background:radial-gradient(circle,rgba(201,169,110,.1) 0%,transparent 70%); border-radius:50%; }
+  .cta-tag { display:inline-block; background:rgba(242,196,206,.2); color:var(--blush); font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:5px 16px; border-radius:20px; margin-bottom:16px; position:relative; z-index:1; }
+  .cta-block h3 { font-family:'Cormorant Garamond',serif; font-size:clamp(22px,5vw,30px); font-weight:600; color:var(--white); line-height:1.25; margin-bottom:10px; position:relative; z-index:1; }
+  .cta-block h3 em { color:var(--blush); font-style:italic; }
+  .cta-block > p { font-size:14px; color:rgba(255,255,255,.65); line-height:1.6; margin-bottom:24px; position:relative; z-index:1; }
+  .cta-list { list-style:none; text-align:left; margin-bottom:28px; position:relative; z-index:1; }
+  .cta-list li { font-size:13.5px; color:rgba(255,255,255,.8); padding:6px 0; display:flex; align-items:flex-start; gap:10px; }
+  .cta-list li::before { content:'✦'; color:var(--gold); font-size:10px; margin-top:3px; min-width:14px; }
+  .cta-btn { display:inline-block; background:linear-gradient(135deg,var(--rose),#d4859a); color:var(--white); text-decoration:none; padding:16px 36px; border-radius:50px; font-family:'Jost',sans-serif; font-size:14px; font-weight:600; letter-spacing:1px; transition:all .25s ease; box-shadow:0 8px 28px rgba(200,118,138,.4); position:relative; z-index:1; }
+  .cta-btn:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(200,118,138,.5); }
+  .cta-note { font-size:11px; color:rgba(255,255,255,.4); margin-top:12px; position:relative; z-index:1; }
+  .good-block { background:linear-gradient(135deg,#f0faf0,#fff); border:1.5px solid rgba(124,173,122,.3); border-radius:20px; padding:32px; text-align:center; margin-bottom:24px; }
+  .good-block h3 { font-family:'Cormorant Garamond',serif; font-size:26px; color:#4a7a48; margin-bottom:10px; }
+  .good-block p { font-size:14px; color:var(--soft-gray); line-height:1.6; margin-bottom:20px; }
+  .good-btn { display:inline-block; background:#7cad7a; color:var(--white); text-decoration:none; padding:14px 32px; border-radius:50px; font-size:13px; font-weight:600; letter-spacing:1px; transition:all .25s; }
+  .good-btn:hover { background:#6a9a68; transform:translateY(-2px); }
+  .btn-restart { background:transparent; border:1.5px solid rgba(242,196,206,.6); color:var(--soft-gray); padding:12px 28px; border-radius:50px; font-size:13px; font-weight:500; cursor:pointer; transition:all .2s; width:100%; font-family:'Jost',sans-serif; margin-top:16px; }
+  .btn-restart:hover { border-color:var(--rose); color:var(--rose); }
+  .divider { display:flex; align-items:center; gap:12px; margin:32px 0; }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(242,196,206,.5),transparent); }
+  .divider span { font-size:16px; color:var(--blush); }
+  @media(max-width:480px){ .wrap{padding:32px 16px 60px;} .contact-wrap{padding:32px 20px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-tag">Вікторія Близнюк • Cherry Beauty Studio</div>
+    <h1>Тест: <em>здоров'я</em><br>твого салону</h1>
+    <div class="header-line"></div>
+    <p>7 питань — і ти побачиш, де твій бізнес втрачає гроші прямо зараз</p>
+  </div>
+
+  <div id="quiz-area">
+    <div class="progress-label"><span id="q-counter">1 / 7</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+
+    <div class="question-block active" data-q="0">
+      <div class="q-number">Питання 01</div>
+      <div class="q-text">Ти знаєш свій точний чистий прибуток за минулий місяць?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Ні, рахую приблизно або взагалі не рахую</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Знаю оберт, але чистий прибуток не рахувала</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Знаю приблизно, веду облік, але не регулярно</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Так, веду фінансовий облік і знаю точні цифри</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="1">
+      <div class="q-number">Питання 02</div>
+      <div class="q-text">Яка завантаженість майстрів у твоєму салоні?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Менше 50% — багато порожніх вікон</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">50-65% — є клієнти, але записаний не повністю</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">65-80% — непогано, але є куди рости</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">80%+ — майстри майже повністю завантажені</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="2">
+      <div class="q-number">Питання 03</div>
+      <div class="q-text">Скільки клієнтів повертаються до тебе повторно?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Не знаю — не відслідковую</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Менше 40% — більшість йдуть назавжди</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">40-65% — повертаються, але багато хто зникає</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">70%+ — клієнти лояльні та регулярно повертаються</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="3">
+      <div class="q-number">Питання 04</div>
+      <div class="q-text">Що станеться, якщо ти поїдеш у відпустку на тиждень?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Хаос — я просто не можу відлучитись</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Буду постійно на зв'язку, щоб все не розвалилось</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Більш-менш працюватиме, але є ризики</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Все буде під контролем — є команда і системи</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="4">
+      <div class="q-number">Питання 05</div>
+      <div class="q-text">Як часто майстри звільняються або конфліктують?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Постійна ротація, плинність кадрів дуже висока</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Часто — кожні 2-3 місяці хтось іде</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Іноді — 1-2 рази на рік</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Рідко — команда стабільна більше року</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="5">
+      <div class="q-number">Питання 06</div>
+      <div class="q-text">Чи робите ви допродажі та збільшення середнього чеку?</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Ні — клієнти купують тільки те, з чим прийшли</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Дуже рідко — майстри не вміють або не хочуть</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Іноді пропонуємо, але системи немає</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Так, є скрипти та мотивація — чек зростає</div></div>
+      </div>
+      <button class="btn-next" onclick="nextQ()">ДАЛІ →</button>
+    </div>
+
+    <div class="question-block" data-q="6">
+      <div class="q-number">Питання 07</div>
+      <div class="q-text">Твій особистий дохід з салону за останні 3 місяці...</div>
+      <div class="options">
+        <div class="option" data-score="0" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Падає або нестабільний — не можу спланувати</div></div>
+        <div class="option" data-score="1" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Стоїть на місці — зростання немає вже давно</div></div>
+        <div class="option" data-score="2" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Трохи зростає, але повільно</div></div>
+        <div class="option" data-score="3" onclick="selectOption(this)"><div class="opt-dot"></div><div class="opt-text">Стабільно зростає — є чіткий тренд вгору</div></div>
+      </div>
+      <button class="btn-next" onclick="showContactForm()">ДІЗНАТИСЬ РЕЗУЛЬТАТ →</button>
+    </div>
+  </div>
+
+  <!-- ФОРМА КОНТАКТІВ -->
+  <div id="contact-screen">
+    <div class="contact-wrap">
+      <div class="contact-icon">🌸</div>
+      <h2 class="contact-title">Залишився один крок</h2>
+      <p class="contact-sub">Введи свої дані — і ми покажемо детальний результат та персональні рекомендації для твого салону</p>
+      <div class="form-field">
+        <label class="form-label">Твоє ім'я</label>
+        <input type="text" id="field-name" class="form-input" placeholder="Наприклад: Марія">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Номер телефону</label>
+        <input type="tel" id="field-phone" class="form-input" placeholder="+380 ___ ___ ___">
+      </div>
+      <div id="form-error" class="form-error" style="display:none">Будь ласка, заповни обидва поля</div>
+      <div id="form-sending" class="form-sending" style="display:none">Зберігаємо дані... ✨</div>
+      <button class="btn-submit" id="btn-submit" onclick="submitAndShowResult()">ПОКАЗАТИ МІЙ РЕЗУЛЬТАТ →</button>
+      <p class="form-privacy">🔒 Твої дані в безпеці — не передаємо третім особам</p>
+    </div>
+  </div>
+
+  <!-- РЕЗУЛЬТАТ -->
+  <div id="result-screen">
+    <div class="result-header">
+      <div class="result-score-ring" id="score-ring">
+        <svg viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="score-text">
+          <span class="score-number" id="score-num">0%</span>
+          <span class="score-label">здоров'я</span>
+        </div>
+      </div>
+      <span class="result-emoji" id="result-emoji"></span>
+      <div class="result-title" id="result-title"></div>
+      <p class="result-desc" id="result-desc"></p>
+    </div>
+    <div class="result-details" id="result-details"></div>
+    <div class="divider"><span>✦</span></div>
+    <div id="cta-area"></div>
+    <button class="btn-restart" onclick="restart()">↺ Пройти тест знову</button>
+  </div>
+
+</div>
+<script>
+  // ═══ НАЛАШТУВАННЯ ═══
+  // Вставте URL вашого Google Apps Script після розгортання
+  const SHEET_URL = "https://script.google.com/macros/s/AKfycbxJj5w_9xUZhpEkb2T7zijjLqfnvFQ7_k-I-FrOI_jWIcQkk1e5sYKLX2_FCjSWFzNfsg/exec";
+  const AUDIT_URL = "https://anketapredzapusu.adsquiz.io/?utm_source=telegram&utm_medium=testnazdorovie&utm_campaign=zaklik1";
+
+  const qNames = ["Фінансовий облік","Завантаженість","Утримання клієнтів","Незалежність від тебе","Стабільність команди","Система продажів","Динаміка доходу"];
+  let scores = [], currentQ = 0;
+
+  function selectOption(el) {
+    el.closest('.question-block').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.closest('.question-block').querySelector('.btn-next').classList.add('visible');
+  }
+
+  function nextQ() {
+    const block = document.querySelector('.question-block.active');
+    const sel = block.querySelector('.option.selected');
+    if (!sel) return;
+    scores[currentQ] = +sel.dataset.score;
+    block.classList.remove('active');
+    currentQ++;
+    const next = document.querySelector(`[data-q="${currentQ}"]`);
+    if (next) { next.classList.add('active'); updateProgress(currentQ + 1); }
+  }
+
+  function updateProgress(step) {
+    document.getElementById('progress-bar').style.width = ((step-1)/7*100)+'%';
+    document.getElementById('q-counter').textContent = step+' / 7';
+  }
+
+  function showContactForm() {
+    const block = document.querySelector('.question-block.active');
+    const sel = block.querySelector('.option.selected');
+    if (!sel) return;
+    scores[currentQ] = +sel.dataset.score;
+    document.getElementById('quiz-area').style.display = 'none';
+    document.getElementById('contact-screen').style.display = 'block';
+  }
+
+  function getLabel(s) { return ['Критично','Слабко','Непогано','Добре'][s]||'—'; }
+
+  async function submitAndShowResult() {
+    const name  = document.getElementById('field-name').value.trim();
+    const phone = document.getElementById('field-phone').value.trim();
+    const errEl = document.getElementById('form-error');
+    const sendEl = document.getElementById('form-sending');
+    const btn = document.getElementById('btn-submit');
+    errEl.style.display = 'none';
+    if (!name || !phone) { errEl.style.display = 'block'; return; }
+
+    const total = scores.reduce((a,b)=>a+b,0);
+    const pct = Math.round((total/21)*100);
+    const zone = pct<=45 ? 'Зона ризику' : pct<=70 ? 'Є потенціал, є втрати' : 'Хороша форма';
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('uk-UA')+' '+now.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+
+    btn.disabled = true;
+    sendEl.style.display = 'block';
+
+    const payload = {
+      date: dateStr, name, phone,
+      score: pct+'%', zone,
+      q1: getLabel(scores[0]), q2: getLabel(scores[1]),
+      q3: getLabel(scores[2]), q4: getLabel(scores[3]),
+      q5: getLabel(scores[4]), q6: getLabel(scores[5]),
+      q7: getLabel(scores[6])
+    };
+
+    if (SHEET_URL) {
+      // Відправка через приховану форму — єдиний надійний спосіб
+      sendViaForm(payload);
+      await new Promise(r => setTimeout(r, 800));
+    }
+
+    sendEl.style.display = 'none';
+    document.getElementById('contact-screen').style.display = 'none';
+    showResult(pct);
+  }
+
+  function showResult(pct) {
+    const screen = document.getElementById('result-screen');
+    screen.classList.add('show');
+
+    const ring = document.getElementById('ring-fill');
+    setTimeout(() => { ring.style.strokeDashoffset = 339.3-(pct/100*339.3); }, 100);
+
+    const numEl = document.getElementById('score-num');
+    let cnt = 0;
+    const t = setInterval(() => { cnt+=2; if(cnt>=pct){cnt=pct;clearInterval(t);} numEl.textContent=cnt+'%'; }, 20);
+
+    const rw = document.getElementById('score-ring');
+
+    // Деталі
+    let html = '<div class="detail-title">Розбір по зонах</div>';
+    qNames.forEach((q,i) => {
+      const s = scores[i];
+      const dot = s<=1?'#C8768A':s===2?'#C9A96E':'#7cad7a';
+      const lbl = s===0?'<span style="color:#8B3A52;font-weight:600">Критично</span>'
+                 :s===1?'<span style="color:#C9A96E;font-weight:600">Слабко</span>'
+                 :s===2?'<span style="color:#a0a060;font-weight:600">Непогано</span>'
+                 :      '<span style="color:#7cad7a;font-weight:600">Добре</span>';
+      html += `<div class="detail-item"><div class="detail-dot" style="background:${dot}"></div><p>${q} — ${lbl}</p></div>`;
+    });
+    document.getElementById('result-details').innerHTML = html;
+
+    const cta = document.getElementById('cta-area');
+
+    if (pct <= 45) {
+      rw.classList.add('zone-bad');
+      document.getElementById('result-emoji').textContent = '🚨';
+      document.getElementById('result-title').innerHTML = 'Твій салон <span style="color:var(--deep-rose)">у зоні ризику</span>';
+      document.getElementById('result-desc').textContent = 'Твій бізнес зараз втрачає гроші кожен день. Є кілька критичних зон, які потребують негайної уваги. Без змін ситуація буде погіршуватись.';
+      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Час зробити крок.<br><em>Запишись на аудит бізнесу</em></h3><p>За 60 хвилин знайдемо всі слабкі місця і дамо конкретний план дій.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" class="cta-btn">ЗАПОВНИТИ АНКЕТУ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
+    } else if (pct <= 70) {
+      rw.classList.add('zone-mid');
+      document.getElementById('result-emoji').textContent = '⚡';
+      document.getElementById('result-title').innerHTML = 'Є потенціал,<br><span style="color:var(--gold)">але є втрати</span>';
+      document.getElementById('result-desc').textContent = 'Твій салон тримається, але є зони, де ти регулярно втрачаєш гроші. Кілька системних змін можуть суттєво збільшити твій дохід.';
+      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Знайдемо точки росту<br><em>саме для твого бізнесу</em></h3><p>На аудиті розберемо слабкі зони і складемо план, як вийти на новий рівень доходу.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" class="cta-btn">ЗАПИСАТИСЬ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
+    } else {
+      rw.classList.add('zone-good');
+      document.getElementById('result-emoji').textContent = '🌸';
+      document.getElementById('result-title').innerHTML = 'Твій салон<br><span style="color:#7cad7a">у хорошій формі!</span>';
+      document.getElementById('result-desc').textContent = 'Чудово! Ти вже побудувала міцну основу. Але навіть у сильному бізнесі завжди є можливість масштабуватись і зробити ривок.';
+      cta.innerHTML = `<div class="good-block"><h3>🌿 Готова до наступного рівня?</h3><p>Ти вже вище за більшість власників салонів. На аудиті покажемо, як збільшити дохід х2 на вже існуючій базі без екстремальних зусиль.</p><a href="${AUDIT_URL}" target="_blank" class="good-btn">ДІЗНАТИСЬ ПРО АУДИТ →</a></div>`;
+    }
+  }
+
+  function sendViaForm(data) {
+    const form = document.getElementById('hidden-form');
+    form.action = SHEET_URL;
+    document.getElementById('hf-date').value  = data.date;
+    document.getElementById('hf-name').value  = data.name;
+    document.getElementById('hf-phone').value = data.phone;
+    document.getElementById('hf-score').value = data.score;
+    document.getElementById('hf-zone').value  = data.zone;
+    document.getElementById('hf-q1').value = data.q1;
+    document.getElementById('hf-q2').value = data.q2;
+    document.getElementById('hf-q3').value = data.q3;
+    document.getElementById('hf-q4').value = data.q4;
+    document.getElementById('hf-q5').value = data.q5;
+    document.getElementById('hf-q6').value = data.q6;
+    document.getElementById('hf-q7').value = data.q7;
+    form.submit();
+    console.log('✅ Форма відправлена в Google Sheets');
+  }
+
+  function restart() {
+    scores=[]; currentQ=0;
+    document.querySelectorAll('.question-block').forEach(b=>{
+      b.classList.remove('active');
+      b.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+      b.querySelector('.btn-next').classList.remove('visible');
+    });
+    document.querySelector('[data-q="0"]').classList.add('active');
+    document.getElementById('result-screen').classList.remove('show');
+    document.getElementById('contact-screen').style.display='none';
+    document.getElementById('quiz-area').style.display='block';
+    document.getElementById('field-name').value='';
+    document.getElementById('field-phone').value='';
+    document.getElementById('btn-submit').disabled=false;
+    document.getElementById('score-ring').className='result-score-ring';
+    document.getElementById('ring-fill').style.strokeDashoffset='339.3';
+    updateProgress(1);
+  }
+</script>
+
+<!--
+╔══════════════════════════════════════════════════════╗
+║   ЯК ПІДКЛЮЧИТИ GOOGLE ТАБЛИЦЮ (5 хвилин)           ║
+╠══════════════════════════════════════════════════════╣
+║                                                      ║
+║  1. Створи нову Google Таблицю                       ║
+║     Додай заголовки в рядок 1:                       ║
+║     A: Дата                                          ║
+║     B: Ім'я                                          ║
+║     C: Телефон                                       ║
+║     D: Результат %                                   ║
+║     E: Зона                                          ║
+║     F: Фінанси                                       ║
+║     G: Завантаженість                                ║
+║     H: Клієнти                                       ║
+║     I: Незалежність                                  ║
+║     J: Команда                                       ║
+║     K: Продажі                                       ║
+║     L: Дохід                                         ║
+║                                                      ║
+║  2. Розширення → Apps Script → вставте код:          ║
+║                                                      ║
+║  function doGet(e) {                                 ║
+║    try {                                             ║
+║      const s = SpreadsheetApp                        ║
+║        .getActiveSpreadsheet()                       ║
+║        .getActiveSheet();                            ║
+║      const p = e.parameter;                          ║
+║      s.appendRow([                                   ║
+║        p.date||'', p.name||'', p.phone||'',          ║
+║        p.score||'', p.zone||'',                      ║
+║        p.q1||'', p.q2||'', p.q3||'', p.q4||'',      ║
+║        p.q5||'', p.q6||'', p.q7||''                  ║
+║      ]);                                             ║
+║    } catch(err) { Logger.log(err); }                 ║
+║    return ContentService                             ║
+║      .createTextOutput('ok')                         ║
+║      .setMimeType(ContentService.MimeType.TEXT);     ║
+║  }                                                   ║
+║                                                      ║
+║  3. Зберегти → Розгорнути → Новий застосунок         ║
+║     Виконувати як: Я                                 ║
+║     Доступ: Будь-хто                                 ║
+║                                                      ║
+║  4. Скопіюй URL і встав у змінну SHEET_URL           ║
+║     (рядок у верхній частині <script>)               ║
+╚══════════════════════════════════════════════════════╝
+-->
+  <!-- Прихована форма для відправки в Google Sheets -->
+  <form id="hidden-form" method="GET" target="hidden-iframe" style="display:none">
+    <input name="date"  id="hf-date">
+    <input name="name"  id="hf-name">
+    <input name="phone" id="hf-phone">
+    <input name="score" id="hf-score">
+    <input name="zone"  id="hf-zone">
+    <input name="q1" id="hf-q1"><input name="q2" id="hf-q2">
+    <input name="q3" id="hf-q3"><input name="q4" id="hf-q4">
+    <input name="q5" id="hf-q5"><input name="q6" id="hf-q6">
+    <input name="q7" id="hf-q7">
+  </form>
+  <iframe name="hidden-iframe" style="display:none"></iframe>
+</body>
+</html>
