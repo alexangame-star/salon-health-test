@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Тест: Здоров'я Твого Салону</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -122,6 +123,7 @@
   .divider { display:flex; align-items:center; gap:12px; margin:32px 0; }
   .divider::before, .divider::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(242,196,206,.5),transparent); }
   .divider span { font-size:16px; color:var(--blush); }
+
   /* RADIO ГРУПА У ФОРМІ */
   .radio-group { display:flex; flex-direction:column; gap:10px; }
   .radio-option {
@@ -157,6 +159,7 @@
   @media(max-width:480px){ .wrap{padding:32px 16px 60px;} .contact-wrap{padding:32px 20px;} }
 </style>
 </head>
+
 <body>
 <div class="wrap">
 
@@ -265,65 +268,41 @@
 
       <div class="form-field">
         <label class="form-label">Твоє ім'я</label>
-        <input type="text" id="field-name" class="form-input" placeholder="Наприклад: Марія">
+        <input type="text" id="field-name" class="form-input" placeholder="Наприклад: Марія" autocomplete="name">
       </div>
 
       <div class="form-field">
         <label class="form-label">Номер телефону</label>
-        <input type="tel" id="field-phone" class="form-input" placeholder="+380 ___ ___ ___">
+        <input type="tel" id="field-phone" class="form-input" placeholder="+380 ___ ___ ___" autocomplete="tel">
       </div>
 
       <div class="form-field">
         <label class="form-label">Твоя роль у бізнесі</label>
         <div class="radio-group" id="field-role">
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Власник</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Власник і працюю майстром</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Керуюча</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Адміністратор</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Підприємець</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'role')">
-            <div class="radio-dot"></div><span>Інша роль</span>
-          </div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Власник</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Власник і працюю майстром</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Керуюча</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Адміністратор</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Підприємець</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'role')"><div class="radio-dot"></div><span>Інша роль</span></div>
         </div>
       </div>
 
       <div class="form-field">
         <label class="form-label">Оберт за останній місяць</label>
         <div class="radio-group" id="field-revenue">
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>До 50 000 грн</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>50 000 — 150 000 грн</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>150 000 — 300 000 грн</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>300 000 — 500 000 грн</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>500 000 — 1 000 000 грн</span>
-          </div>
-          <div class="radio-option" onclick="selectRadio(this,'revenue')">
-            <div class="radio-dot"></div><span>Від 1 000 000 грн+</span>
-          </div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>До 50 000 грн</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>50 000 — 150 000 грн</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>150 000 — 300 000 грн</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>300 000 — 500 000 грн</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>500 000 — 1 000 000 грн</span></div>
+          <div class="radio-option" onclick="selectRadio(this,'revenue')"><div class="radio-dot"></div><span>Від 1 000 000 грн+</span></div>
         </div>
       </div>
 
       <div id="form-error" class="form-error" style="display:none">Будь ласка, заповни всі поля</div>
       <div id="form-sending" class="form-sending" style="display:none">Зберігаємо дані... ✨</div>
-      <button class="btn-submit" id="btn-submit" onclick="submitAndShowResult()">ПОКАЗАТИ МІЙ РЕЗУЛЬТАТ →</button>
+      <button class="btn-submit" id="btn-submit" type="button" onclick="submitAndShowResult()">ПОКАЗАТИ МІЙ РЕЗУЛЬТАТ →</button>
       <p class="form-privacy">🔒 Твої дані в безпеці — не передаємо третім особам</p>
     </div>
   </div>
@@ -332,9 +311,9 @@
   <div id="result-screen">
     <div class="result-header">
       <div class="result-score-ring" id="score-ring">
-        <svg viewBox="0 0 120 120">
-          <circle class="ring-bg" cx="60" cy="60" r="54"/>
-          <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="54"/>
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-bg" cx="60" cy="60" r="54"></circle>
+          <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="54"></circle>
         </svg>
         <div class="score-text">
           <span class="score-number" id="score-num">0%</span>
@@ -348,95 +327,151 @@
     <div class="result-details" id="result-details"></div>
     <div class="divider"><span>✦</span></div>
     <div id="cta-area"></div>
-    <button class="btn-restart" onclick="restart()">↺ Пройти тест знову</button>
+    <button class="btn-restart" type="button" onclick="restart()">↺ Пройти тест знову</button>
   </div>
 
 </div>
+
 <script>
-  // ═══ НАЛАШТУВАННЯ ═══
-  // Вставте URL вашого Google Apps Script після розгортання
+  // ✅ ВАЖЛИВО: твій /exec (Apps Script)
   const SHEET_URL = "https://script.google.com/macros/s/AKfycbxJj5w_9xUZhpEkb2T7zijjLqfnvFQ7_k-I-FrOI_jWIcQkk1e5sYKLX2_FCjSWFzNfsg/exec";
   const AUDIT_URL = "https://anketapredzapusu.adsquiz.io/?utm_source=telegram&utm_medium=testnazdorovie&utm_campaign=zaklik1";
 
   const qNames = ["Фінансовий облік","Завантаженість","Утримання клієнтів","Незалежність від тебе","Стабільність команди","Система продажів","Динаміка доходу"];
-  let scores = [], currentQ = 0;
+  let scores = Array(7).fill(null);
+  let currentQ = 0;
+
+  // Уникнути проблеми з "Enter" у полях
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.getElementById('contact-screen').style.display === 'block') {
+      e.preventDefault();
+      submitAndShowResult();
+    }
+  });
 
   function selectOption(el) {
-    el.closest('.question-block').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    const block = el.closest('.question-block');
+    block.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    el.closest('.question-block').querySelector('.btn-next').classList.add('visible');
+    const btn = block.querySelector('.btn-next');
+    if (btn) btn.classList.add('visible');
   }
 
   function nextQ() {
     const block = document.querySelector('.question-block.active');
+    if (!block) return;
     const sel = block.querySelector('.option.selected');
     if (!sel) return;
-    scores[currentQ] = +sel.dataset.score;
+
+    scores[currentQ] = Number(sel.dataset.score);
+
     block.classList.remove('active');
     currentQ++;
+
     const next = document.querySelector(`[data-q="${currentQ}"]`);
-    if (next) { next.classList.add('active'); updateProgress(currentQ + 1); }
+    if (next) {
+      next.classList.add('active');
+      updateProgress(currentQ + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   function updateProgress(step) {
-    document.getElementById('progress-bar').style.width = ((step-1)/7*100)+'%';
-    document.getElementById('q-counter').textContent = step+' / 7';
+    document.getElementById('progress-bar').style.width = ((step - 1) / 7 * 100) + '%';
+    document.getElementById('q-counter').textContent = step + ' / 7';
   }
 
   function showContactForm() {
     const block = document.querySelector('.question-block.active');
+    if (!block) return;
     const sel = block.querySelector('.option.selected');
     if (!sel) return;
-    scores[currentQ] = +sel.dataset.score;
+
+    scores[currentQ] = Number(sel.dataset.score);
+
     document.getElementById('quiz-area').style.display = 'none';
     document.getElementById('contact-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function selectRadio(el, group) {
     document.querySelectorAll(`#field-${group} .radio-option`).forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
+    // запам'ятати значення у data-selected (на всяк випадок)
+    const span = el.querySelector('span');
+    const root = document.getElementById(`field-${group}`);
+    if (root && span) root.dataset.selected = span.textContent.trim();
   }
 
   function getRadioValue(group) {
+    const root = document.getElementById(`field-${group}`);
+    // спочатку пробуємо dataset
+    if (root && root.dataset.selected) return root.dataset.selected;
+    // fallback
     const sel = document.querySelector(`#field-${group} .radio-option.selected span`);
-    return sel ? sel.textContent : '';
+    return sel ? sel.textContent.trim() : '';
   }
 
-  function getLabel(s) { return ['Критично','Слабко','Непогано','Добре'][s]||'—'; }
+  function getLabel(s) {
+    return ['Критично','Слабко','Непогано','Добре'][s] || '—';
+  }
 
   async function submitAndShowResult() {
     const name    = document.getElementById('field-name').value.trim();
     const phone   = document.getElementById('field-phone').value.trim();
     const role    = getRadioValue('role');
     const revenue = getRadioValue('revenue');
-    const errEl   = document.getElementById('form-error');
-    const sendEl  = document.getElementById('form-sending');
-    const btn     = document.getElementById('btn-submit');
-    errEl.style.display = 'none';
-    if (!name || !phone || !role || !revenue) { errEl.style.display = 'block'; return; }
 
-    const total = scores.reduce((a,b)=>a+b,0);
-    const pct = Math.round((total/21)*100);
-    const zone = pct<=45 ? 'Зона ризику' : pct<=70 ? 'Є потенціал, є втрати' : 'Хороша форма';
+    const errEl  = document.getElementById('form-error');
+    const sendEl = document.getElementById('form-sending');
+    const btn    = document.getElementById('btn-submit');
+
+    errEl.style.display = 'none';
+
+    // Перевірка, що всі 7 відповідей є
+    if (scores.some(v => v === null)) {
+      errEl.textContent = 'Будь ласка, пройди всі 7 питань';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    if (!name || !phone || !role || !revenue) {
+      errEl.textContent = 'Будь ласка, заповни всі поля';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const total = scores.reduce((a, b) => a + b, 0);
+    const pct = Math.round((total / 21) * 100);
+    const zone = pct <= 45 ? 'Зона ризику' : pct <= 70 ? 'Є потенціал, є втрати' : 'Хороша форма';
+
     const now = new Date();
-    const dateStr = now.toLocaleDateString('uk-UA')+' '+now.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+    const dateStr = now.toLocaleDateString('uk-UA') + ' ' + now.toLocaleTimeString('uk-UA', { hour:'2-digit', minute:'2-digit' });
 
     btn.disabled = true;
     sendEl.style.display = 'block';
 
     const payload = {
-      date: dateStr, name, phone, role, revenue,
-      score: pct+'%', zone,
-      q1: getLabel(scores[0]), q2: getLabel(scores[1]),
-      q3: getLabel(scores[2]), q4: getLabel(scores[3]),
-      q5: getLabel(scores[4]), q6: getLabel(scores[5]),
+      date: dateStr,
+      name,
+      phone,
+      role,
+      revenue,
+      score: pct + '%',
+      zone,
+      q1: getLabel(scores[0]),
+      q2: getLabel(scores[1]),
+      q3: getLabel(scores[2]),
+      q4: getLabel(scores[3]),
+      q5: getLabel(scores[4]),
+      q6: getLabel(scores[5]),
       q7: getLabel(scores[6])
     };
 
     if (SHEET_URL) {
-      // Відправка через приховану форму — єдиний надійний спосіб
       sendViaForm(payload);
-      await new Promise(r => setTimeout(r, 800));
+      // маленька пауза, щоб форма встигла відправитись
+      await new Promise(r => setTimeout(r, 900));
     }
 
     sendEl.style.display = 'none';
@@ -449,156 +484,143 @@
     screen.classList.add('show');
 
     const ring = document.getElementById('ring-fill');
-    setTimeout(() => { ring.style.strokeDashoffset = 339.3-(pct/100*339.3); }, 100);
+    setTimeout(() => { ring.style.strokeDashoffset = 339.3 - (pct / 100 * 339.3); }, 100);
 
     const numEl = document.getElementById('score-num');
     let cnt = 0;
-    const t = setInterval(() => { cnt+=2; if(cnt>=pct){cnt=pct;clearInterval(t);} numEl.textContent=cnt+'%'; }, 20);
+    const t = setInterval(() => {
+      cnt += 2;
+      if (cnt >= pct) { cnt = pct; clearInterval(t); }
+      numEl.textContent = cnt + '%';
+    }, 20);
 
     const rw = document.getElementById('score-ring');
 
     // Деталі
     let html = '<div class="detail-title">Розбір по зонах</div>';
-    qNames.forEach((q,i) => {
+    qNames.forEach((q, i) => {
       const s = scores[i];
-      const dot = s<=1?'#C8768A':s===2?'#C9A96E':'#7cad7a';
-      const lbl = s===0?'<span style="color:#8B3A52;font-weight:600">Критично</span>'
-                 :s===1?'<span style="color:#C9A96E;font-weight:600">Слабко</span>'
-                 :s===2?'<span style="color:#a0a060;font-weight:600">Непогано</span>'
-                 :      '<span style="color:#7cad7a;font-weight:600">Добре</span>';
+      const dot = s <= 1 ? '#C8768A' : s === 2 ? '#C9A96E' : '#7cad7a';
+      const lbl =
+        s === 0 ? '<span style="color:#8B3A52;font-weight:600">Критично</span>' :
+        s === 1 ? '<span style="color:#C9A96E;font-weight:600">Слабко</span>' :
+        s === 2 ? '<span style="color:#a0a060;font-weight:600">Непогано</span>' :
+                  '<span style="color:#7cad7a;font-weight:600">Добре</span>';
+
       html += `<div class="detail-item"><div class="detail-dot" style="background:${dot}"></div><p>${q} — ${lbl}</p></div>`;
     });
     document.getElementById('result-details').innerHTML = html;
 
     const cta = document.getElementById('cta-area');
 
+    // прибрати старі класи зони (на всяк)
+    rw.classList.remove('zone-bad','zone-mid','zone-good');
+
     if (pct <= 45) {
       rw.classList.add('zone-bad');
       document.getElementById('result-emoji').textContent = '🚨';
       document.getElementById('result-title').innerHTML = 'Твій салон <span style="color:var(--deep-rose)">у зоні ризику</span>';
       document.getElementById('result-desc').textContent = 'Твій бізнес зараз втрачає гроші кожен день. Є кілька критичних зон, які потребують негайної уваги. Без змін ситуація буде погіршуватись.';
-      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Час зробити крок.<br><em>Запишись на аудит бізнесу</em></h3><p>За 60 хвилин знайдемо всі слабкі місця і дамо конкретний план дій.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" class="cta-btn">ЗАПОВНИТИ АНКЕТУ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
+      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Час зробити крок.<br><em>Запишись на аудит бізнесу</em></h3><p>За 60 хвилин знайдемо всі слабкі місця і дамо конкретний план дій.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" rel="noopener" class="cta-btn">ЗАПОВНИТИ АНКЕТУ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
     } else if (pct <= 70) {
       rw.classList.add('zone-mid');
       document.getElementById('result-emoji').textContent = '⚡';
       document.getElementById('result-title').innerHTML = 'Є потенціал,<br><span style="color:var(--gold)">але є втрати</span>';
       document.getElementById('result-desc').textContent = 'Твій салон тримається, але є зони, де ти регулярно втрачаєш гроші. Кілька системних змін можуть суттєво збільшити твій дохід.';
-      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Знайдемо точки росту<br><em>саме для твого бізнесу</em></h3><p>На аудиті розберемо слабкі зони і складемо план, як вийти на новий рівень доходу.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" class="cta-btn">ЗАПИСАТИСЬ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
+      cta.innerHTML = `<div class="cta-block"><div class="cta-tag">Безкоштовно • 60 хв онлайн</div><h3>Знайдемо точки росту<br><em>саме для твого бізнесу</em></h3><p>На аудиті розберемо слабкі зони і складемо план, як вийти на новий рівень доходу.</p><ul class="cta-list"><li>Персональний аналіз твого салону</li><li>Конкретний план дій на 30 днів</li><li>Рекомендації по цифрах та команді</li><li>Можливість спецумов на Beauty CEO</li></ul><a href="${AUDIT_URL}" target="_blank" rel="noopener" class="cta-btn">ЗАПИСАТИСЬ НА АУДИТ →</a><p class="cta-note">⏰ Лише 20 місць на місяць</p></div>`;
     } else {
       rw.classList.add('zone-good');
       document.getElementById('result-emoji').textContent = '🌸';
       document.getElementById('result-title').innerHTML = 'Твій салон<br><span style="color:#7cad7a">у хорошій формі!</span>';
       document.getElementById('result-desc').textContent = 'Чудово! Ти вже побудувала міцну основу. Але навіть у сильному бізнесі завжди є можливість масштабуватись і зробити ривок.';
-      cta.innerHTML = `<div class="good-block"><h3>🌿 Готова до наступного рівня?</h3><p>Ти вже вище за більшість власників салонів. На аудиті покажемо, як збільшити дохід х2 на вже існуючій базі без екстремальних зусиль.</p><a href="${AUDIT_URL}" target="_blank" class="good-btn">ДІЗНАТИСЬ ПРО АУДИТ →</a></div>`;
+      cta.innerHTML = `<div class="good-block"><h3>🌿 Готова до наступного рівня?</h3><p>Ти вже вище за більшість власників салонів. На аудиті покажемо, як збільшити дохід х2 на вже існуючій базі без екстремальних зусиль.</p><a href="${AUDIT_URL}" target="_blank" rel="noopener" class="good-btn">ДІЗНАТИСЬ ПРО АУДИТ →</a></div>`;
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function sendViaForm(data) {
     const form = document.getElementById('hidden-form');
     form.action = SHEET_URL;
-    document.getElementById('hf-date').value    = data.date;
-    document.getElementById('hf-name').value    = data.name;
-    document.getElementById('hf-phone').value   = data.phone;
-    document.getElementById('hf-role').value    = data.role;
-    document.getElementById('hf-revenue').value = data.revenue;
-    document.getElementById('hf-score').value   = data.score;
-    document.getElementById('hf-zone').value    = data.zone;
-    document.getElementById('hf-q1').value = data.q1;
-    document.getElementById('hf-q2').value = data.q2;
-    document.getElementById('hf-q3').value = data.q3;
-    document.getElementById('hf-q4').value = data.q4;
-    document.getElementById('hf-q5').value = data.q5;
-    document.getElementById('hf-q6').value = data.q6;
-    document.getElementById('hf-q7').value = data.q7;
+
+    document.getElementById('hf-date').value    = data.date || '';
+    document.getElementById('hf-name').value    = data.name || '';
+    document.getElementById('hf-phone').value   = data.phone || '';
+    document.getElementById('hf-role').value    = data.role || '';
+    document.getElementById('hf-revenue').value = data.revenue || '';
+    document.getElementById('hf-score').value   = data.score || '';
+    document.getElementById('hf-zone').value    = data.zone || '';
+
+    document.getElementById('hf-q1').value = data.q1 || '';
+    document.getElementById('hf-q2').value = data.q2 || '';
+    document.getElementById('hf-q3').value = data.q3 || '';
+    document.getElementById('hf-q4').value = data.q4 || '';
+    document.getElementById('hf-q5').value = data.q5 || '';
+    document.getElementById('hf-q6').value = data.q6 || '';
+    document.getElementById('hf-q7').value = data.q7 || '';
+
+    // Важливо: GET працює, але щоб символи коректно пройшли — браузер сам закодує query.
     form.submit();
-    console.log('✅ Форма відправлена в Google Sheets');
+    console.log('✅ Відправлено в Google Sheets');
   }
 
   function restart() {
-    scores=[]; currentQ=0;
-    document.querySelectorAll('.question-block').forEach(b=>{
+    scores = Array(7).fill(null);
+    currentQ = 0;
+
+    document.querySelectorAll('.question-block').forEach(b => {
       b.classList.remove('active');
-      b.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
-      b.querySelector('.btn-next').classList.remove('visible');
+      b.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      const btn = b.querySelector('.btn-next');
+      if (btn) btn.classList.remove('visible');
     });
-    document.querySelector('[data-q="0"]').classList.add('active');
+
+    const first = document.querySelector('[data-q="0"]');
+    if (first) first.classList.add('active');
+
     document.getElementById('result-screen').classList.remove('show');
-    document.getElementById('contact-screen').style.display='none';
-    document.getElementById('quiz-area').style.display='block';
-    document.getElementById('field-name').value='';
-    document.getElementById('field-phone').value='';
-    document.getElementById('btn-submit').disabled=false;
-    document.querySelectorAll('.radio-option').forEach(o=>o.classList.remove('selected'));
-    document.getElementById('score-ring').className='result-score-ring';
-    document.getElementById('ring-fill').style.strokeDashoffset='339.3';
+    document.getElementById('contact-screen').style.display = 'none';
+    document.getElementById('quiz-area').style.display = 'block';
+
+    document.getElementById('field-name').value = '';
+    document.getElementById('field-phone').value = '';
+    document.getElementById('btn-submit').disabled = false;
+
+    document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+    const r1 = document.getElementById('field-role'); if (r1) delete r1.dataset.selected;
+    const r2 = document.getElementById('field-revenue'); if (r2) delete r2.dataset.selected;
+
+    const ringWrap = document.getElementById('score-ring');
+    ringWrap.classList.remove('zone-bad','zone-mid','zone-good');
+
+    document.getElementById('ring-fill').style.strokeDashoffset = '339.3';
+    document.getElementById('score-num').textContent = '0%';
+    document.getElementById('cta-area').innerHTML = '';
+    document.getElementById('result-emoji').textContent = '';
+    document.getElementById('result-title').textContent = '';
+    document.getElementById('result-desc').textContent = '';
+    document.getElementById('result-details').innerHTML = '';
+
     updateProgress(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 
-<!--
-╔══════════════════════════════════════════════════════╗
-║   ЯК ПІДКЛЮЧИТИ GOOGLE ТАБЛИЦЮ (5 хвилин)           ║
-╠══════════════════════════════════════════════════════╣
-║                                                      ║
-║  1. Створи нову Google Таблицю                       ║
-║     Додай заголовки в рядок 1:                       ║
-║     A: Дата                                          ║
-║     B: Ім'я                                          ║
-║     C: Телефон                                       ║
-║     D: Роль у бізнесі                                ║
-║     E: Оберт за місяць                               ║
-║     F: Результат %                                   ║
-║     G: Зона                                          ║
-║     H: Фінанси                                       ║
-║     I: Завантаженість                                ║
-║     J: Клієнти                                       ║
-║     K: Незалежність                                  ║
-║     L: Команда                                       ║
-║     M: Продажі                                       ║
-║     N: Дохід                                         ║
-║                                                      ║
-║  2. Розширення → Apps Script → вставте код:          ║
-║                                                      ║
-║  function doGet(e) {                                 ║
-║    try {                                             ║
-║      const s = SpreadsheetApp                        ║
-║        .getActiveSpreadsheet()                       ║
-║        .getActiveSheet();                            ║
-║      const p = e.parameter;                          ║
-║      s.appendRow([                                   ║
-║        p.date||'', p.name||'', p.phone||'',          ║
-║        p.score||'', p.zone||'',                      ║
-║        p.q1||'', p.q2||'', p.q3||'', p.q4||'',      ║
-║        p.q5||'', p.q6||'', p.q7||''                  ║
-║      ]);                                             ║
-║    } catch(err) { Logger.log(err); }                 ║
-║    return ContentService                             ║
-║      .createTextOutput('ok')                         ║
-║      .setMimeType(ContentService.MimeType.TEXT);     ║
-║  }                                                   ║
-║                                                      ║
-║  3. Зберегти → Розгорнути → Новий застосунок         ║
-║     Виконувати як: Я                                 ║
-║     Доступ: Будь-хто                                 ║
-║                                                      ║
-║  4. Скопіюй URL і встав у змінну SHEET_URL           ║
-║     (рядок у верхній частині <script>)               ║
-╚══════════════════════════════════════════════════════╝
--->
-  <!-- Прихована форма для відправки в Google Sheets -->
-  <form id="hidden-form" method="GET" target="hidden-iframe" style="display:none">
-    <input name="date"    id="hf-date">
-    <input name="name"    id="hf-name">
-    <input name="phone"   id="hf-phone">
-    <input name="role"    id="hf-role">
-    <input name="revenue" id="hf-revenue">
-    <input name="score"   id="hf-score">
-    <input name="zone"    id="hf-zone">
-    <input name="q1" id="hf-q1"><input name="q2" id="hf-q2">
-    <input name="q3" id="hf-q3"><input name="q4" id="hf-q4">
-    <input name="q5" id="hf-q5"><input name="q6" id="hf-q6">
-    <input name="q7" id="hf-q7">
-  </form>
-  <iframe name="hidden-iframe" style="display:none"></iframe>
+<!-- Прихована форма для відправки в Google Sheets -->
+<form id="hidden-form" method="GET" target="hidden-iframe" style="display:none">
+  <input name="date"    id="hf-date">
+  <input name="name"    id="hf-name">
+  <input name="phone"   id="hf-phone">
+  <input name="role"    id="hf-role">
+  <input name="revenue" id="hf-revenue">
+  <input name="score"   id="hf-score">
+  <input name="zone"    id="hf-zone">
+  <input name="q1" id="hf-q1"><input name="q2" id="hf-q2">
+  <input name="q3" id="hf-q3"><input name="q4" id="hf-q4">
+  <input name="q5" id="hf-q5"><input name="q6" id="hf-q6">
+  <input name="q7" id="hf-q7">
+</form>
+<iframe name="hidden-iframe" style="display:none"></iframe>
+
 </body>
 </html>
